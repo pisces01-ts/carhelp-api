@@ -134,6 +134,26 @@ INSERT INTO `users` (`fullname`, `phone`, `email`, `password`, `role`, `status`)
 ('Admin', '0999999999', 'admin@carhelp.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin', 'active');
 
 -- =====================================================
+-- Table: promotions
+-- =====================================================
+CREATE TABLE IF NOT EXISTS `promotions` (
+  `promo_id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL,
+  `description` text DEFAULT NULL,
+  `code` varchar(50) NOT NULL UNIQUE,
+  `discount_type` enum('percent','fixed') DEFAULT 'percent',
+  `discount_value` decimal(10,2) NOT NULL DEFAULT 0,
+  `min_amount` decimal(10,2) DEFAULT 0,
+  `max_uses` int(11) DEFAULT 0,
+  `used_count` int(11) DEFAULT 0,
+  `start_date` date NOT NULL,
+  `end_date` date NOT NULL,
+  `status` enum('active','inactive') DEFAULT 'active',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`promo_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- =====================================================
 -- Table: complaints
 -- =====================================================
 CREATE TABLE IF NOT EXISTS `complaints` (

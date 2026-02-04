@@ -134,6 +134,25 @@ INSERT INTO `users` (`fullname`, `phone`, `email`, `password`, `role`, `status`)
 ('Admin', '0999999999', 'admin@carhelp.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin', 'active');
 
 -- =====================================================
+-- Table: complaints
+-- =====================================================
+CREATE TABLE IF NOT EXISTS `complaints` (
+  `complaint_id` int(11) NOT NULL AUTO_INCREMENT,
+  `request_id` int(11) NOT NULL,
+  `customer_id` int(11) NOT NULL,
+  `technician_id` int(11) DEFAULT NULL,
+  `subject` varchar(255) NOT NULL,
+  `message` text NOT NULL,
+  `admin_response` text DEFAULT NULL,
+  `status` enum('pending','in_progress','resolved','rejected') DEFAULT 'pending',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `resolved_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`complaint_id`),
+  KEY `request_id` (`request_id`),
+  KEY `status` (`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- =====================================================
 -- Table: chat_messages
 -- =====================================================
 CREATE TABLE IF NOT EXISTS `chat_messages` (

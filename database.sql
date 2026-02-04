@@ -133,6 +133,22 @@ CREATE TABLE IF NOT EXISTS `admin_logs` (
 INSERT INTO `users` (`fullname`, `phone`, `email`, `password`, `role`, `status`) VALUES
 ('Admin', '0999999999', 'admin@carhelp.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin', 'active');
 
+-- =====================================================
+-- Table: chat_messages
+-- =====================================================
+CREATE TABLE IF NOT EXISTS `chat_messages` (
+  `message_id` int(11) NOT NULL AUTO_INCREMENT,
+  `request_id` int(11) NOT NULL,
+  `sender_id` int(11) NOT NULL,
+  `sender_role` enum('customer','technician') NOT NULL,
+  `message` text NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`message_id`),
+  KEY `request_id` (`request_id`),
+  KEY `idx_request_created` (`request_id`, `created_at`),
+  CONSTRAINT `fk_chat_request` FOREIGN KEY (`request_id`) REFERENCES `service_requests` (`request_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- Sample repair types
 INSERT INTO `repair_types` (`name`) VALUES
 ('ยางแตก / ยางรั่ว'),

@@ -189,10 +189,65 @@ CREATE TABLE IF NOT EXISTS `chat_messages` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Sample repair types
-INSERT INTO `repair_types` (`name`) VALUES
-('ยางแตก / ยางรั่ว'),
-('แบตหมด / จั๊มแบต'),
-('รถสตาร์ทไม่ติด'),
-('น้ำมันหมด'),
-('รถเสียกลางทาง'),
-('ลากรถ / รถสไลด์');
+INSERT INTO `repair_types` (`name`, `base_price`) VALUES
+('ยางแตก / ยางรั่ว', 300),
+('แบตหมด / จั๊มแบต', 200),
+('รถสตาร์ทไม่ติด', 500),
+('น้ำมันหมด', 150),
+('รถเสียกลางทาง', 800),
+('ลากรถ / รถสไลด์', 1500);
+
+-- =====================================================
+-- Sample Users (password: 123456 for all)
+-- =====================================================
+
+-- Customers
+INSERT INTO `users` (`fullname`, `phone`, `email`, `password`, `role`, `status`) VALUES
+('มาดามไก่', '0811111111', 'madam@gmail.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'customer', 'active'),
+('สมชาย ใจดี', '0822222222', 'somchai@gmail.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'customer', 'active'),
+('สมศรี รักดี', '0833333333', 'somsri@gmail.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'customer', 'active');
+
+-- Technicians
+INSERT INTO `users` (`fullname`, `phone`, `email`, `password`, `role`, `status`) VALUES
+('ช่างสมปอง', '0844444444', 'tech1@gmail.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'technician', 'active'),
+('ช่างมานะ', '0855555555', 'tech2@gmail.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'technician', 'active'),
+('ช่างวิชัย', '0866666666', 'tech3@gmail.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'technician', 'active');
+
+-- Technician Profiles
+INSERT INTO `technician_profiles` (`user_id`, `expertise`, `vehicle_plate`, `vehicle_model`, `is_online`, `is_available`, `current_lat`, `current_lng`, `avg_rating`, `total_jobs`, `status`) VALUES
+(5, 'ยางรถยนต์, แบตเตอรี่', 'กข 1234', 'Toyota Hilux', 1, 1, 13.7563, 100.5018, 4.80, 25, 'approved'),
+(6, 'เครื่องยนต์, ระบบไฟฟ้า', 'ขค 5678', 'Isuzu D-Max', 1, 1, 13.7500, 100.4900, 4.50, 18, 'approved'),
+(7, 'ลากรถ, ซ่อมทั่วไป', 'คง 9012', 'Ford Ranger', 0, 1, 13.7600, 100.5100, 4.20, 12, 'approved');
+
+-- =====================================================
+-- Sample Service Requests
+-- =====================================================
+INSERT INTO `service_requests` (`customer_id`, `technician_id`, `problem_type`, `problem_details`, `location_lat`, `location_lng`, `location_address`, `status`, `price`, `request_time`, `completed_time`) VALUES
+(2, 5, 'ยางแตก / ยางรั่ว', 'ยางหลังขวาแตก', 13.7563, 100.5018, 'ถนนสุขุมวิท ใกล้ BTS อโศก', 'completed', 350, DATE_SUB(NOW(), INTERVAL 2 DAY), DATE_SUB(NOW(), INTERVAL 2 DAY)),
+(3, 5, 'แบตหมด / จั๊มแบต', 'รถจอดนาน แบตหมด', 13.7450, 100.5350, 'ห้างสรรพสินค้า เซ็นทรัลเวิลด์', 'completed', 250, DATE_SUB(NOW(), INTERVAL 1 DAY), DATE_SUB(NOW(), INTERVAL 1 DAY)),
+(4, 6, 'รถสตาร์ทไม่ติด', 'สตาร์ทไม่ติด ไม่ทราบสาเหตุ', 13.7300, 100.5200, 'ซอยสุขุมวิท 55 ทองหล่อ', 'completed', 600, DATE_SUB(NOW(), INTERVAL 3 DAY), DATE_SUB(NOW(), INTERVAL 3 DAY)),
+(2, NULL, 'น้ำมันหมด', 'น้ำมันหมดกลางทาง', 13.7400, 100.5000, 'ถนนพระราม 4', 'pending', 0, NOW(), NULL);
+
+-- =====================================================
+-- Sample Reviews
+-- =====================================================
+INSERT INTO `reviews` (`request_id`, `customer_id`, `technician_id`, `rating`, `comment`, `created_at`) VALUES
+(1, 2, 5, 5, 'ช่างมาเร็วมาก ซ่อมเสร็จไว ราคาเป็นธรรม ประทับใจครับ', DATE_SUB(NOW(), INTERVAL 2 DAY)),
+(2, 3, 5, 5, 'บริการดีมาก ช่างใจดี แนะนำเลย', DATE_SUB(NOW(), INTERVAL 1 DAY)),
+(3, 4, 6, 4, 'บริการดี แต่มาช้านิดหน่อย', DATE_SUB(NOW(), INTERVAL 3 DAY));
+
+-- =====================================================
+-- Sample Promotions
+-- =====================================================
+INSERT INTO `promotions` (`title`, `description`, `code`, `discount_type`, `discount_value`, `min_amount`, `start_date`, `end_date`, `status`) VALUES
+('ลด 20% สำหรับลูกค้าใหม่', 'ใช้ได้ทุกบริการ สำหรับการใช้งานครั้งแรก', 'WELCOME20', 'percent', 20, 0, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 30 DAY), 'active'),
+('ฟรีค่าเดินทาง', 'เมื่อใช้บริการเปลี่ยนยาง', 'FREETIRE', 'fixed', 100, 300, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 14 DAY), 'active'),
+('ลด 100 บาท', 'เมื่อใช้บริการครบ 500 บาทขึ้นไป', 'SAVE100', 'fixed', 100, 500, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 60 DAY), 'active');
+
+-- =====================================================
+-- Sample Chat Messages
+-- =====================================================
+INSERT INTO `chat_messages` (`request_id`, `sender_id`, `sender_role`, `message`, `created_at`) VALUES
+(1, 2, 'customer', 'ช่างมาถึงแล้วหรือยังคะ?', DATE_SUB(NOW(), INTERVAL 2 DAY)),
+(1, 5, 'technician', 'กำลังเดินทางไปครับ อีกประมาณ 10 นาที', DATE_SUB(NOW(), INTERVAL 2 DAY)),
+(1, 2, 'customer', 'ขอบคุณค่ะ', DATE_SUB(NOW(), INTERVAL 2 DAY));

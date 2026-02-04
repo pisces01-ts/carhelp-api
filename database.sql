@@ -213,20 +213,62 @@ INSERT INTO `users` (`fullname`, `phone`, `email`, `password`, `role`, `status`)
 ('ช่างมานะ', '0855555555', 'tech2@gmail.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'technician', 'active'),
 ('ช่างวิชัย', '0866666666', 'tech3@gmail.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'technician', 'active');
 
--- Technician Profiles
+-- =====================================================
+-- บัญชี "ทดลอง" สำหรับทดสอบลบในหน้า Admin
+-- =====================================================
+INSERT INTO `users` (`fullname`, `phone`, `email`, `password`, `role`, `status`) VALUES
+('ทดลอง ลบลูกค้า', '0877777777', 'test_customer@gmail.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'customer', 'active'),
+('ทดลอง ลบช่าง', '0888888888', 'test_tech@gmail.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'technician', 'pending'),
+('ทดลอง ระงับลูกค้า', '0899999999', 'test_suspend@gmail.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'customer', 'active'),
+('ทดลอง อนุมัติช่าง', '0812345678', 'test_approve@gmail.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'technician', 'pending');
+
+-- Technician Profiles (รวมช่างทดลอง)
 INSERT INTO `technician_profiles` (`user_id`, `expertise`, `vehicle_plate`, `vehicle_model`, `is_online`, `is_available`, `current_lat`, `current_lng`, `avg_rating`, `total_jobs`, `status`) VALUES
 (5, 'ยางรถยนต์, แบตเตอรี่', 'กข 1234', 'Toyota Hilux', 1, 1, 13.7563, 100.5018, 4.80, 25, 'approved'),
 (6, 'เครื่องยนต์, ระบบไฟฟ้า', 'ขค 5678', 'Isuzu D-Max', 1, 1, 13.7500, 100.4900, 4.50, 18, 'approved'),
-(7, 'ลากรถ, ซ่อมทั่วไป', 'คง 9012', 'Ford Ranger', 0, 1, 13.7600, 100.5100, 4.20, 12, 'approved');
+(7, 'ลากรถ, ซ่อมทั่วไป', 'คง 9012', 'Ford Ranger', 0, 1, 13.7600, 100.5100, 4.20, 12, 'approved'),
+(9, 'ทดลอง ลบช่าง', 'ทด 1111', 'Honda City', 0, 0, 13.7000, 100.5000, 0.00, 0, 'pending'),
+(11, 'ทดลอง อนุมัติ', 'ทด 2222', 'Toyota Vios', 0, 0, 13.7100, 100.5100, 0.00, 0, 'pending');
 
 -- =====================================================
--- Sample Service Requests
+-- Sample Service Requests (6 months data for charts)
 -- =====================================================
 INSERT INTO `service_requests` (`customer_id`, `technician_id`, `problem_type`, `problem_details`, `location_lat`, `location_lng`, `location_address`, `status`, `price`, `request_time`, `completed_time`) VALUES
+-- เดือนปัจจุบัน
 (2, 5, 'ยางแตก / ยางรั่ว', 'ยางหลังขวาแตก', 13.7563, 100.5018, 'ถนนสุขุมวิท ใกล้ BTS อโศก', 'completed', 350, DATE_SUB(NOW(), INTERVAL 2 DAY), DATE_SUB(NOW(), INTERVAL 2 DAY)),
 (3, 5, 'แบตหมด / จั๊มแบต', 'รถจอดนาน แบตหมด', 13.7450, 100.5350, 'ห้างสรรพสินค้า เซ็นทรัลเวิลด์', 'completed', 250, DATE_SUB(NOW(), INTERVAL 1 DAY), DATE_SUB(NOW(), INTERVAL 1 DAY)),
 (4, 6, 'รถสตาร์ทไม่ติด', 'สตาร์ทไม่ติด ไม่ทราบสาเหตุ', 13.7300, 100.5200, 'ซอยสุขุมวิท 55 ทองหล่อ', 'completed', 600, DATE_SUB(NOW(), INTERVAL 3 DAY), DATE_SUB(NOW(), INTERVAL 3 DAY)),
-(2, NULL, 'น้ำมันหมด', 'น้ำมันหมดกลางทาง', 13.7400, 100.5000, 'ถนนพระราม 4', 'pending', 0, NOW(), NULL);
+(2, 5, 'น้ำมันหมด', 'น้ำมันหมด', 13.7400, 100.5000, 'ถนนพระราม 4', 'completed', 200, DATE_SUB(NOW(), INTERVAL 5 DAY), DATE_SUB(NOW(), INTERVAL 5 DAY)),
+(3, 6, 'ยางแตก / ยางรั่ว', 'ยางหน้าซ้ายรั่ว', 13.7550, 100.5100, 'ถนนเพชรบุรี', 'completed', 320, DATE_SUB(NOW(), INTERVAL 7 DAY), DATE_SUB(NOW(), INTERVAL 7 DAY)),
+-- เดือนที่ 1 (1 เดือนก่อน)
+(2, 5, 'แบตหมด / จั๊มแบต', 'แบตหมด', 13.7500, 100.5200, 'สยามพารากอน', 'completed', 280, DATE_SUB(NOW(), INTERVAL 35 DAY), DATE_SUB(NOW(), INTERVAL 35 DAY)),
+(3, 6, 'รถเสียกลางทาง', 'เครื่องดับ', 13.7600, 100.5300, 'ถนนสีลม', 'completed', 850, DATE_SUB(NOW(), INTERVAL 38 DAY), DATE_SUB(NOW(), INTERVAL 38 DAY)),
+(4, 5, 'ยางแตก / ยางรั่ว', 'ยางแตก 2 เส้น', 13.7400, 100.5100, 'ถนนสาทร', 'completed', 650, DATE_SUB(NOW(), INTERVAL 40 DAY), DATE_SUB(NOW(), INTERVAL 40 DAY)),
+(2, 7, 'ลากรถ / รถสไลด์', 'รถพัง ต้องลาก', 13.7300, 100.4900, 'ถนนพหลโยธิน', 'completed', 1800, DATE_SUB(NOW(), INTERVAL 42 DAY), DATE_SUB(NOW(), INTERVAL 42 DAY)),
+-- เดือนที่ 2 (2 เดือนก่อน)
+(3, 5, 'รถสตาร์ทไม่ติด', 'สตาร์ทไม่ติด', 13.7550, 100.5050, 'ถนนรัชดาภิเษก', 'completed', 550, DATE_SUB(NOW(), INTERVAL 65 DAY), DATE_SUB(NOW(), INTERVAL 65 DAY)),
+(4, 6, 'แบตหมด / จั๊มแบต', 'แบตเก่า', 13.7450, 100.5150, 'ถนนลาดพร้าว', 'completed', 300, DATE_SUB(NOW(), INTERVAL 68 DAY), DATE_SUB(NOW(), INTERVAL 68 DAY)),
+(2, 5, 'น้ำมันหมด', 'น้ำมันหมดกลางทาง', 13.7350, 100.5250, 'ถนนวิภาวดี', 'completed', 180, DATE_SUB(NOW(), INTERVAL 70 DAY), DATE_SUB(NOW(), INTERVAL 70 DAY)),
+-- เดือนที่ 3 (3 เดือนก่อน)
+(3, 6, 'ยางแตก / ยางรั่ว', 'ยางหลังรั่ว', 13.7650, 100.5350, 'ถนนเอกมัย', 'completed', 380, DATE_SUB(NOW(), INTERVAL 95 DAY), DATE_SUB(NOW(), INTERVAL 95 DAY)),
+(4, 5, 'รถเสียกลางทาง', 'เครื่องร้อน', 13.7550, 100.5450, 'ถนนอโศก', 'completed', 920, DATE_SUB(NOW(), INTERVAL 98 DAY), DATE_SUB(NOW(), INTERVAL 98 DAY)),
+(2, 7, 'ลากรถ / รถสไลด์', 'อุบัติเหตุ', 13.7450, 100.5550, 'ถนนพระราม 9', 'completed', 2100, DATE_SUB(NOW(), INTERVAL 100 DAY), DATE_SUB(NOW(), INTERVAL 100 DAY)),
+(3, 5, 'แบตหมด / จั๊มแบต', 'แบตหมด', 13.7350, 100.5650, 'ถนนดินแดง', 'completed', 250, DATE_SUB(NOW(), INTERVAL 102 DAY), DATE_SUB(NOW(), INTERVAL 102 DAY)),
+-- เดือนที่ 4 (4 เดือนก่อน)
+(4, 6, 'รถสตาร์ทไม่ติด', 'สตาร์ทเตอร์พัง', 13.7250, 100.5750, 'ถนนห้วยขวาง', 'completed', 780, DATE_SUB(NOW(), INTERVAL 125 DAY), DATE_SUB(NOW(), INTERVAL 125 DAY)),
+(2, 5, 'ยางแตก / ยางรั่ว', 'ยางแบน', 13.7150, 100.5850, 'ถนนประดิษฐ์มนูธรรม', 'completed', 290, DATE_SUB(NOW(), INTERVAL 128 DAY), DATE_SUB(NOW(), INTERVAL 128 DAY)),
+(3, 7, 'รถเสียกลางทาง', 'สายพานขาด', 13.7050, 100.5950, 'ถนนรามอินทรา', 'completed', 1100, DATE_SUB(NOW(), INTERVAL 130 DAY), DATE_SUB(NOW(), INTERVAL 130 DAY)),
+-- เดือนที่ 5 (5 เดือนก่อน)
+(4, 5, 'แบตหมด / จั๊มแบต', 'แบตเสื่อม', 13.6950, 100.6050, 'ถนนแจ้งวัฒนะ', 'completed', 320, DATE_SUB(NOW(), INTERVAL 155 DAY), DATE_SUB(NOW(), INTERVAL 155 DAY)),
+(2, 6, 'น้ำมันหมด', 'น้ำมันหมด', 13.6850, 100.6150, 'ถนนงามวงศ์วาน', 'completed', 160, DATE_SUB(NOW(), INTERVAL 158 DAY), DATE_SUB(NOW(), INTERVAL 158 DAY)),
+(3, 5, 'ยางแตก / ยางรั่ว', 'ยางระเบิด', 13.6750, 100.6250, 'ถนนติวานนท์', 'completed', 420, DATE_SUB(NOW(), INTERVAL 160 DAY), DATE_SUB(NOW(), INTERVAL 160 DAY)),
+(4, 7, 'ลากรถ / รถสไลด์', 'รถชน', 13.6650, 100.6350, 'ถนนบางกรวย', 'completed', 1950, DATE_SUB(NOW(), INTERVAL 162 DAY), DATE_SUB(NOW(), INTERVAL 162 DAY)),
+-- เดือนที่ 6 (6 เดือนก่อน)
+(2, 5, 'รถสตาร์ทไม่ติด', 'หัวเทียนเสีย', 13.6550, 100.6450, 'ถนนราชพฤกษ์', 'completed', 480, DATE_SUB(NOW(), INTERVAL 185 DAY), DATE_SUB(NOW(), INTERVAL 185 DAY)),
+(3, 6, 'รถเสียกลางทาง', 'พัดลมพัง', 13.6450, 100.6550, 'ถนนบรมราชชนนี', 'completed', 750, DATE_SUB(NOW(), INTERVAL 188 DAY), DATE_SUB(NOW(), INTERVAL 188 DAY)),
+-- งานที่รอดำเนินการ
+(2, NULL, 'น้ำมันหมด', 'น้ำมันหมดกลางทาง', 13.7400, 100.5000, 'ถนนพระราม 4', 'pending', 0, NOW(), NULL),
+(3, NULL, 'ยางแตก / ยางรั่ว', 'ยางแบนกะทันหัน', 13.7500, 100.5100, 'ถนนสุขุมวิท 21', 'pending', 0, NOW(), NULL);
 
 -- =====================================================
 -- Sample Reviews
